@@ -22,10 +22,10 @@ def move(validMoves):
 
     validMove = mm.alphaBetaSearch(state)
 
-    print("VALID MOVES: \n", validMoves)
+    # print("VALID MOVES: \n", validMoves)
     myMove = validMoves[0][0]
 
-    # myMove = randint(0, len(validMoves) - 1)
+    myMove = randint(0, len(validMoves) - 1)
 
     return myMove
 
