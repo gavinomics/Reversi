@@ -1,4 +1,6 @@
 import sys
+import pdb;
+import copy
 import socket
 import time
 from random import randint
@@ -9,7 +11,9 @@ t1 = 0.0  # the amount of time remaining to player 1
 t2 = 0.0  # the amount of time remaining to player 2
 
 state = [[0 for x in range(8)] for y in range(8)]  # state[0][0] is the bottom left corner of the board (on the GUI)
-
+myNumber = 0; #assigned when game starts, 1 or 2
+treeIndex = {}
+currentRound = 0
 
 # You should modify this function
 # validMoves is a list of valid locations that you could place your "stone" on this turn
@@ -24,11 +28,106 @@ def move(validMoves):
 
     # print("VALID MOVES: \n", validMoves)
     myMove = validMoves[0][0]
-
-    myMove = randint(0, len(validMoves) - 1)
-
+    if (currentRound < 5):
+        myMove = randint(0, len(validMoves) - 1)
+    else:
+        score, bestMove = recursiveStateMaker(state, 5, myNumber, "root")
+        myMove = validMoves.index(bestMove)
     return myMove
 
+# <<<<<<< HEAD
+#     myMove = randint(0, len(validMoves) - 1)
+# =======
+#
+# >>>>>>> b0c5e6a63b57d4a6b186c1afa32f62167f5c268b
+
+def recursiveStateMaker(currentState, depth, player, parentAddress):
+    if (depth == 0): 
+        value = getScore(currentState) #this variable just for printing
+        print(f"Score: {value}")
+        return getScore(currentState), None
+    moves = getValidFutureMoves(currentState, player)
+    scores = []
+    moveDict = {}
+    for move in moves:
+        nextState = createFutureState(currentState, move, player)
+        nextPlayer = 2 if player == 1 else 1
+        nextAddress = f"{parentAddress}---Player{player}:({move[0]},{move[1]})"
+        print(nextAddress)
+        for i in range(8):
+            print(nextState[7-i])
+        score, _ = recursiveStateMaker(nextState, depth-1, nextPlayer, nextAddress)
+        if (moveDict.get(score) == None):
+            moveDict[score] = move
+
+        scores.append(score)
+        if (treeIndex.get(parentAddress) != None):
+            if (player != myNumber):
+                if (score > treeIndex[parentAddress]):
+                    print("prune")
+                    break
+            else:
+                if (score < treeIndex[parentAddress]):
+                    print("prune")
+                    break
+    if (len(scores)==0): return -100, None #What happens when no moves left? How to score?
+    result = max(scores) if (player == myNumber) else min(scores)
+    treeIndex[parentAddress] = result
+    return result, moveDict[result]
+
+
+def createFutureState(state, move, player):
+    futureState = copy.deepcopy(state)
+    futureState[move[0]][move[1]] = player
+    flipThePieces(futureState, move, player, 1, 0)
+    flipThePieces(futureState, move, player, 1, 1)
+    flipThePieces(futureState, move, player, 0, 1)
+    flipThePieces(futureState, move, player, -1, 1)
+    flipThePieces(futureState, move, player, -1, 0)
+    flipThePieces(futureState, move, player, -1, -1)
+    flipThePieces(futureState, move, player, 0, -1)
+    flipThePieces(futureState, move, player, 1, -1)
+    return futureState
+
+def flipThePieces(futureState, move, player, moveRow, moveColumn):
+    row = move[0]
+    column = move[1]
+    continuous = True
+    possibleFlip = []
+    while(True):
+        row += moveRow
+        column += moveColumn
+        if (row > 7 or row < 0 or column > 7 or column <0):
+            break
+        elif (futureState[row][column] == 0):
+            break
+        elif (futureState[row][column] == player and continuous):
+            break
+        elif (futureState[row][column] != player):
+            continuous = False
+            possibleFlip.append([row, column])
+        elif (futureState[row][column] == player and not continuous): #flip
+            for coord in possibleFlip:
+                futureState[coord[0]][coord[1]] = player
+            break
+
+
+def getValidFutureMoves(futureState, me):
+    validMoves = []
+    for i in range(8):
+        for j in range(8):
+            if (futureState[i][j] == 0):
+                if (couldBe(i, j, me)):
+                    validMoves.append([i, j])
+    return validMoves
+
+def getScore(state):
+    score = 0;
+    for i in range(8):
+        for j in range(8):
+            if (state[i][j] == myNumber):
+                score += 1
+    return score
 
 # establishes a connection with the server
 def initClient(me, thehost):
@@ -59,6 +158,9 @@ def readMessage(sock):
 
     round = int(message[1])
     print("Round: " + str(round))
+    global currentRound
+    currentRound = round
+    print(currentRound)
     # t1 = float(message[2])  # update of the amount of time available to player 1
     # print t1
     # t2 = float(message[3])  # update of the amount of time available to player 2
@@ -161,7 +263,6 @@ def playGame(me, thehost):
             print("Move")
             validMoves = getValidMoves(status[1], me)
             print(validMoves)
-
             myMove = move(validMoves)
 
             sel = str(validMoves[myMove][0]) + "\n" + str(validMoves[myMove][1]) + "\n"
@@ -178,7 +279,6 @@ def playGame(me, thehost):
 if __name__ == "__main__":
     print('Number of arguments:', len(sys.argv), 'arguments.')
     print('Argument List:', str(sys.argv))
-
     print(str(sys.argv[1]))
-
+    myNumber = int(sys.argv[2])
     playGame(int(sys.argv[2]), sys.argv[1])
