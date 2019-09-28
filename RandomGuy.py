@@ -5,6 +5,8 @@ import socket
 import time
 import math
 from random import randint
+from ModifiedAlphaBeta import modifiedAlphaBetaSearch
+from DanielAlphaBeta import danielAlphaBetaSearch
 
 t1 = 0.0  # the amount of time remaining to player 1
 t2 = 0.0  # the amount of time remaining to player 2
@@ -25,7 +27,13 @@ def move(validMoves):
     if (currentRound < 5):
         newAction = randint(0, len(validMoves) - 1)
     else:
-        bestAction = alphaBetaSearch(5, state)
+        # bestAction = alphaBetaSearch(5, state)
+        if (myPlayerNumber == 2):
+            bestAction = modifiedAlphaBetaSearch(5, state, myPlayerNumber)
+        else:
+            bestAction = danielAlphaBetaSearch(5, state, myPlayerNumber, currentRound)
+            #bestAction = alphaBetaSearch(5, state)
+
         print("Best Action: ", bestAction)
 
         newAction = validMoves.index(bestAction)
