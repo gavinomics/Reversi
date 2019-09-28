@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="aeb15f64-39e6-4a8f-baf7-501dce8524f8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/RandomGuy.py" beforeDir="false" afterPath="$PROJECT_DIR$/RandomGuy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReversiRandom_Python/maximin.py" beforeDir="false" afterPath="$PROJECT_DIR$/ReversiRandom_Python/maximin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ReversiServer/GameLog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ReversiServer/GameLog.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,8 +17,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/RandomGuy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="37" selection-start-line="37" selection-end-line="37" />
+            <state relative-caret-position="181">
+              <caret line="100" column="40" selection-start-line="100" selection-start-column="40" selection-end-line="100" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+                <element signature="e#715#753#0" />
+                <element signature="e#1196#1238#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -24,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ReversiRandom_Python/maximin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="38" column="19" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
+            <state relative-caret-position="195">
+              <caret line="13" column="4" selection-start-column="5" selection-end-line="79" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -53,6 +60,19 @@
       <find>print</find>
       <find>validMoves</find>
       <find>move</find>
+      <find>getscore</find>
+      <find>getUt</find>
+      <find>myNumber</find>
+      <find>mynum</find>
+      <find>myPlayerNumber</find>
+      <find>player</find>
+      <find>&quot;Score</find>
+      <find>noMoreM</find>
+      <find>noMoreMoves</find>
+      <find>createFuture</find>
+      <find>getvalidMoves</find>
+      <find>action</find>
+      <find>score</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -65,18 +85,18 @@
         <option value="$PROJECT_DIR$/minimax.py" />
         <option value="$PROJECT_DIR$/ReversiRandom_Python/minimax.py" />
         <option value="$PROJECT_DIR$/ReversiRandom_Python/Minimax.py" />
-        <option value="$PROJECT_DIR$/ReversiRandom_Python/maximin.py" />
         <option value="$PROJECT_DIR$/ReversiRandom_Python/MinimaxCode.py" />
+        <option value="$PROJECT_DIR$/ReversiRandom_Python/maximin.py" />
         <option value="$PROJECT_DIR$/RandomGuy.py" />
         <option value="$PROJECT_DIR$/RandomGuy.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="769" />
-    <option name="y" value="117" />
-    <option name="width" value="1841" />
-    <option name="height" value="1503" />
+    <option name="x" value="1280" />
+    <option name="y" value="23" />
+    <option name="width" value="1280" />
+    <option name="height" value="1417" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -107,6 +127,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -161,7 +182,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/RandomGuy.py" />
-      <option name="PARAMETERS" value="" />
+      <option name="PARAMETERS" value="localhost 2" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -169,6 +190,10 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.Minimax" />
+      <item itemvalue="Python.Reversi" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.Reversi" />
@@ -199,27 +224,37 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="769" y="117" width="1841" height="1503" extended-state="0" />
-    <editor active="true" />
+    <frame x="1280" y="23" width="1280" height="1417" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19945055" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.019011406" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3299539" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.28239202" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.41984734" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32956812" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.25655565" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.3298893" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.30943397" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32956812" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/RandomGuy.py</url>
+          <line>112</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$USER_HOME$/Library/Caches/PyCharmCE2019.1/python_stubs/-1199943126/sys.py">
@@ -250,8 +285,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ReversiRandom_Python/maximin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="38" column="19" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
+        <state relative-caret-position="195">
+          <caret line="13" column="4" selection-start-column="5" selection-end-line="79" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -264,8 +299,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RandomGuy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="37" selection-start-line="37" selection-end-line="37" />
+        <state relative-caret-position="181">
+          <caret line="100" column="40" selection-start-line="100" selection-start-column="40" selection-end-line="100" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#715#753#0" />
+            <element signature="e#1196#1238#0" />
+          </folding>
         </state>
       </provider>
     </entry>
