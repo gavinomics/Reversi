@@ -3,15 +3,16 @@ import pdb;
 import copy
 import socket
 import time
+import math
 from random import randint
-from ReversiRandom_Python.MinimaxCode import minimax
-from ReversiRandom_Python.maximin import maximin
 
 t1 = 0.0  # the amount of time remaining to player 1
 t2 = 0.0  # the amount of time remaining to player 2
 
 state = [[0 for x in range(8)] for y in range(8)]  # state[0][0] is the bottom left corner of the board (on the GUI)
-myNumber = 0; #assigned when game starts, 1 or 2
+
+myPlayerNumber = 0; #assigned when game starts, 1 or 2
+
 treeIndex = {}
 currentRound = 0
 
@@ -21,73 +22,150 @@ currentRound = 0
 def move(validMoves):
     # just return a random move
 
-    # mm = minimax(depth=3, nodeIndex=0, maximizingPlayer=2, values=, alpha=, beta):)
-    mm = maximin()
+    if (currentRound < 5):
+        newAction = randint(0, len(validMoves) - 1)
+    else:
+        bestAction = alphaBetaSearch(5, state)
+        print("Best Action: ", bestAction)
 
-    validMove = mm.alphaBetaSearch(state)
+        newAction = validMoves.index(bestAction)
+        print("New Action: ", newAction)
 
     # print("VALID MOVES: \n", validMoves)
-    myMove = validMoves[0][0]
-    if (currentRound < 5):
-        myMove = randint(0, len(validMoves) - 1)
-    else:
-        score, bestMove = recursiveStateMaker(state, 5, myNumber, "root")
-        myMove = validMoves.index(bestMove)
-    return myMove
 
-# <<<<<<< HEAD
-#     myMove = randint(0, len(validMoves) - 1)
-# =======
+    # if (currentRound < 5):
+    #     myMove = randint(0, len(validMoves) - 1)
+    # else:
+    #     score, bestMove = recursiveStateMaker(state, 5, myPlayerNumber, "root")
+    #     myMove = validMoves.index(bestMove)
+    # return myMove
+
+    return newAction
+
+# myMove = randint(0, len(validMoves) - 1)
+
 #
-# >>>>>>> b0c5e6a63b57d4a6b186c1afa32f62167f5c268b
+# def recursiveStateMaker(currentState, depth, player, parentAddress):
+#
+#     if (depth == 0):
+#         value = getUtility(currentState) #this variable just for printing
+#         print(f"Score: {value}")
+#         return getUtility(currentState), None
+#
+#     moves = getValidFutureMoves(currentState, player)
+#     scores = []
+#     moveDict = {}
+#
+#     for move in moves:
+#         nextState = createFutureState(currentState, move, player)
+#         nextPlayer = 2 if player == 1 else 1
+#         nextAddress = f"{parentAddress}---Player{player}:({move[0]},{move[1]})"
+#
+#         print(nextAddress)
+#
+#         for i in range(8):
+#             print(nextState[7-i])
+#
+#         score, _ = recursiveStateMaker(nextState, depth-1, nextPlayer, nextAddress)
+#
+#         if (moveDict.get(score) == None):
+#             moveDict[score] = move
+#
+#         scores.append(score)
+#
+#         if (treeIndex.get(parentAddress) != None):
+#             if (player != myPlayerNumber):
+#                 if (score > treeIndex[parentAddress]):
+#                     print("prune")
+#                     break
+#             else:
+#                 if (score < treeIndex[parentAddress]):
+#                     print("prune")
+#                     break
+#
+#     if (len(scores)==0): return -100, None #What happens when no moves left? How to score?
+#     result = max(scores) if (player == myPlayerNumber) else min(scores)
+#     treeIndex[parentAddress] = result
+#
+#     return result, moveDict[result]
 
-def recursiveStateMaker(currentState, depth, player, parentAddress):
-    if (depth == 0): 
-        value = getScore(currentState) #this variable just for printing
-        print(f"Score: {value}")
-        return getScore(currentState), None
-    moves = getValidFutureMoves(currentState, player)
-    scores = []
-    moveDict = {}
-    for move in moves:
-        nextState = createFutureState(currentState, move, player)
-        nextPlayer = 2 if player == 1 else 1
-        nextAddress = f"{parentAddress}---Player{player}:({move[0]},{move[1]})"
-        print(nextAddress)
-        for i in range(8):
-            print(nextState[7-i])
-        score, _ = recursiveStateMaker(nextState, depth-1, nextPlayer, nextAddress)
-        if (moveDict.get(score) == None):
-            moveDict[score] = move
-
-        scores.append(score)
-        if (treeIndex.get(parentAddress) != None):
-            if (player != myNumber):
-                if (score > treeIndex[parentAddress]):
-                    print("prune")
-                    break
-            else:
-                if (score < treeIndex[parentAddress]):
-                    print("prune")
-                    break
-    if (len(scores)==0): return -100, None #What happens when no moves left? How to score?
-    result = max(scores) if (player == myNumber) else min(scores)
-    treeIndex[parentAddress] = result
-    return result, moveDict[result]
 
 
-def createFutureState(state, move, player):
-    futureState = copy.deepcopy(state)
-    futureState[move[0]][move[1]] = player
-    flipThePieces(futureState, move, player, 1, 0)
-    flipThePieces(futureState, move, player, 1, 1)
-    flipThePieces(futureState, move, player, 0, 1)
-    flipThePieces(futureState, move, player, -1, 1)
-    flipThePieces(futureState, move, player, -1, 0)
-    flipThePieces(futureState, move, player, -1, -1)
-    flipThePieces(futureState, move, player, 0, -1)
-    flipThePieces(futureState, move, player, 1, -1)
-    return futureState
+def alphaBetaSearch(depth, state):
+
+    _, action = maxValue(depth, state, -math.inf, math.inf)
+
+    return action
+
+
+def maxValue(depth, state, alpha, beta):
+    print("Enter maxValue func")
+    print("Depth: ", depth)
+
+    action = None
+    utility = -math.inf
+
+    if depth == 0 or len(getValidFutureMoves(state, myPlayerNumber)) == 0:
+        utility = getUtility(state)
+        return utility, action
+
+    # if len(getValidFutureMoves(state, myPlayerNumber)) == 0:
+    #     print("Valid moves is Empty!!!")
+
+    for a in getValidFutureMoves(state, myPlayerNumber):
+
+        actionUtilityofMinimizer, _ = minValue(depth-1, getResults(state, a, myPlayerNumber), alpha, beta)
+
+        if actionUtilityofMinimizer > utility:
+            print(actionUtilityofMinimizer, " is greater than ", utility)
+            utility = actionUtilityofMinimizer
+            action = a
+
+        if utility >= beta:
+            print("Prune")
+            return utility, action
+
+        alpha = max(alpha, utility)
+        print("Alpha after comparison: ", alpha)
+
+    if action == None:
+        print("************ ACTION IS NONE!!!!!!***************")
+
+    return utility, action
+
+
+def minValue(depth, state, alpha, beta):
+    print("Enter minValue func")
+    print("Depth: ", depth)
+    action = None
+    utility = math.inf
+    playerNum = 1 if myPlayerNumber == 2 else 1
+
+    if depth == 0 or len(getValidFutureMoves(state, playerNum)) == 0:
+        utility = getUtility(state)
+        return utility, action
+
+    for a in getValidFutureMoves(state, playerNum):
+
+        actionUtilityofMaximizer, _ = maxValue(depth-1, getResults(state, a, playerNum), alpha, beta)
+
+        if actionUtilityofMaximizer < utility:
+            print(actionUtilityofMaximizer, " is less than ", utility)
+            utility = actionUtilityofMaximizer
+            action = a
+
+        if utility <= beta:
+            print("Prune")
+            return utility, action
+
+        beta = min(beta, utility)
+        print("Beta after comparison: ", alpha)
+
+    if action == None:
+        print("************ ACTION IS NONE!!!!!!***************")
+
+    return utility, action
+
 
 def flipThePieces(futureState, move, player, moveRow, moveColumn):
     row = move[0]
@@ -121,13 +199,50 @@ def getValidFutureMoves(futureState, me):
                     validMoves.append([i, j])
     return validMoves
 
-def getScore(state):
+def getUtility(state):
     score = 0;
     for i in range(8):
         for j in range(8):
-            if (state[i][j] == myNumber):
+            if (state[i][j] == myPlayerNumber):
                 score += 1
     return score
+
+
+
+def noMoreMoves(state):
+    for i in range(8):
+        for j in range(8):
+            if state[i][j] == 0:
+                return False
+
+    return True
+
+def getResults(state, action, player):
+
+    futureState = copy.deepcopy(state)
+
+    # futureState = state
+
+    futureState[action[0]][action[1]] = player
+
+    flipThePieces(futureState, action, player, 1, 1)
+    flipThePieces(futureState, action, player, 0, 1)
+    flipThePieces(futureState, action, player, -1, 1)
+    flipThePieces(futureState, action, player, 1, 0)
+    flipThePieces(futureState, action, player, -1, 0)
+    flipThePieces(futureState, action, player, -1, -1)
+    flipThePieces(futureState, action, player, 0, -1)
+    flipThePieces(futureState, action, player, 1, -1)
+
+    print("\n")
+    print("Player: ", player)
+    print("Action: ", action)
+
+    for x in range(8):
+        print(futureState[7-x])
+
+    return futureState
+
 
 # establishes a connection with the server
 def initClient(me, thehost):
@@ -280,5 +395,5 @@ if __name__ == "__main__":
     print('Number of arguments:', len(sys.argv), 'arguments.')
     print('Argument List:', str(sys.argv))
     print(str(sys.argv[1]))
-    myNumber = int(sys.argv[2])
+    myPlayerNumber = int(sys.argv[2])
     playGame(int(sys.argv[2]), sys.argv[1])
