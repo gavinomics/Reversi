@@ -25,70 +25,29 @@ def move(validMoves):
     if (currentRound < 5):
         newAction = randint(0, len(validMoves) - 1)
     else:
-        bestAction = alphaBetaSearch(5, state)
-        print("Best Action: ", bestAction)
-
-        newAction = validMoves.index(bestAction)
-        print("New Action: ", newAction)
-
-    # print("VALID MOVES: \n", validMoves)
-
-    # if (currentRound < 5):
-    #     myMove = randint(0, len(validMoves) - 1)
-    # else:
-    #     score, bestMove = recursiveStateMaker(state, 5, myPlayerNumber, "root")
-    #     myMove = validMoves.index(bestMove)
-    # return myMove
+        newAction = takeAction(validMoves)
 
     return newAction
 
-# myMove = randint(0, len(validMoves) - 1)
+def takeAction(validMoves):
 
-#
-# def recursiveStateMaker(currentState, depth, player, parentAddress):
-#
-#     if (depth == 0):
-#         value = getUtility(currentState) #this variable just for printing
-#         print(f"Score: {value}")
-#         return getUtility(currentState), None
-#
-#     moves = getValidFutureMoves(currentState, player)
-#     scores = []
-#     moveDict = {}
-#
-#     for move in moves:
-#         nextState = createFutureState(currentState, move, player)
-#         nextPlayer = 2 if player == 1 else 1
-#         nextAddress = f"{parentAddress}---Player{player}:({move[0]},{move[1]})"
-#
-#         print(nextAddress)
-#
-#         for i in range(8):
-#             print(nextState[7-i])
-#
-#         score, _ = recursiveStateMaker(nextState, depth-1, nextPlayer, nextAddress)
-#
-#         if (moveDict.get(score) == None):
-#             moveDict[score] = move
-#
-#         scores.append(score)
-#
-#         if (treeIndex.get(parentAddress) != None):
-#             if (player != myPlayerNumber):
-#                 if (score > treeIndex[parentAddress]):
-#                     print("prune")
-#                     break
-#             else:
-#                 if (score < treeIndex[parentAddress]):
-#                     print("prune")
-#                     break
-#
-#     if (len(scores)==0): return -100, None #What happens when no moves left? How to score?
-#     result = max(scores) if (player == myPlayerNumber) else min(scores)
-#     treeIndex[parentAddress] = result
-#
-#     return result, moveDict[result]
+    print("Take Action")
+    print("Available moves: ", validMoves)
+    for a in validMoves:
+        if isCorner(a):
+            return validMoves.index(a)
 
+    for a in validMoves:
+        if isSafeEdge(a, state):
+            return validMoves.index(a)
+
+    bestAction = alphaBetaSearch(5, state)
+    print("Best Action: ", bestAction)
+
+    newAction = validMoves.index(bestAction)
+    print("New Action: ", newAction)
+
+    return newAction
 
 
 def alphaBetaSearch(depth, state):
@@ -99,8 +58,8 @@ def alphaBetaSearch(depth, state):
 
 
 def maxValue(depth, state, alpha, beta):
-    print("Enter maxValue func")
-    print("Depth: ", depth)
+    # print("Enter maxValue func")
+    # print("Depth: ", depth)
 
     action = None
     utility = -math.inf
@@ -117,26 +76,23 @@ def maxValue(depth, state, alpha, beta):
         actionUtilityofMinimizer, _ = minValue(depth-1, getResults(state, a, myPlayerNumber), alpha, beta)
 
         if actionUtilityofMinimizer > utility:
-            print(actionUtilityofMinimizer, " is greater than ", utility)
+            # print(actionUtilityofMinimizer, " is greater than ", utility)
             utility = actionUtilityofMinimizer
             action = a
 
         if utility >= beta:
-            print("Prune")
+            # print("Prune")
             return utility, action
 
         alpha = max(alpha, utility)
-        print("Alpha after comparison: ", alpha)
-
-    if action == None:
-        print("************ ACTION IS NONE!!!!!!***************")
+        # print("Alpha after comparison: ", alpha)
 
     return utility, action
 
 
 def minValue(depth, state, alpha, beta):
-    print("Enter minValue func")
-    print("Depth: ", depth)
+    # print("Enter minValue func")
+    # print("Depth: ", depth)
     action = None
     utility = math.inf
     playerNum = 1 if myPlayerNumber == 2 else 1
@@ -150,19 +106,16 @@ def minValue(depth, state, alpha, beta):
         actionUtilityofMaximizer, _ = maxValue(depth-1, getResults(state, a, playerNum), alpha, beta)
 
         if actionUtilityofMaximizer < utility:
-            print(actionUtilityofMaximizer, " is less than ", utility)
+            # print(actionUtilityofMaximizer, " is less than ", utility)
             utility = actionUtilityofMaximizer
             action = a
 
         if utility <= beta:
-            print("Prune")
+            # print("Prune")
             return utility, action
 
         beta = min(beta, utility)
-        print("Beta after comparison: ", alpha)
-
-    if action == None:
-        print("************ ACTION IS NONE!!!!!!***************")
+        # print("Beta after comparison: ", alpha)
 
     return utility, action
 
@@ -177,6 +130,7 @@ def flipThePieces(futureState, move, player, moveRow, moveColumn):
         column += moveColumn
         if (row > 7 or row < 0 or column > 7 or column <0):
             break
+            break
         elif (futureState[row][column] == 0):
             break
         elif (futureState[row][column] == player and continuous):
@@ -188,6 +142,65 @@ def flipThePieces(futureState, move, player, moveRow, moveColumn):
             for coord in possibleFlip:
                 futureState[coord[0]][coord[1]] = player
             break
+
+def isCorner(action):
+    if action == [0,0] or action == [7,7] or action == [0,7] or action == [7,0]:
+        return True
+
+    return False
+
+def isSafeEdge(action, state):
+
+    print("\n")
+    print("State in function:")
+    for row in state:
+        print(row)
+    print("\n")
+
+    row = action[0]
+    col = action[1]
+
+    if row == 0: #top row
+        if 0 < col and col < 7:
+            left = col - 1
+            right = col + 1
+            if state[left] != 0 and state[right] != 0:
+                return True
+            if state[left] == 0 and state[right] == 0:
+                return True
+
+
+    if row == 7: #bottom row
+        if 0 < col and col < 7:
+            left = col - 1
+            right = col + 1
+            if state[left] != 0 and state[right] != 0:
+                return True
+            if state[left] == 0 and state[right] == 0:
+                return True
+
+
+    if col == 0: #left column
+        if 0 < row and row < 7:
+            top = row - 1
+            bottom = row + 1
+            if state[top] != 0 and state[bottom] != 0:
+                return True
+            if state[top] == 0 and state[bottom] == 0:
+                return True
+
+    if col == 7:  #right column
+        if 0 < row and row < 7:
+            top = row - 1
+            bottom = row + 1
+            if state[top] != 0 and state[bottom] != 0:
+                return True
+            if state[top] == 0 and state[bottom] == 0:
+                return True
+
+    return False
+
+
 
 
 def getValidFutureMoves(futureState, me):
@@ -234,12 +247,12 @@ def getResults(state, action, player):
     flipThePieces(futureState, action, player, 0, -1)
     flipThePieces(futureState, action, player, 1, -1)
 
-    print("\n")
-    print("Player: ", player)
-    print("Action: ", action)
+    # print("\n")
+    # print("Player: ", player)
+    # print("Action: ", action)
 
-    for x in range(8):
-        print(futureState[7-x])
+    # for x in range(8):
+    #     print(futureState[7-x])
 
     return futureState
 
