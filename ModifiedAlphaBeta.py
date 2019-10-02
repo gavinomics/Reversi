@@ -136,6 +136,7 @@ def getUtility(state):
         for j in range(8):
             if (state[i][j] == myPlayerNumber):
                 score += 1
+    score += scoreUnflippablePieces(state, myPlayerNumber)
     return score
 
 def couldBe(futureState, row, col, me):
@@ -179,4 +180,112 @@ def checkDirection(futureState, row, col, incx, incy, me):
                 break
 
     return False
+
+def scoreUnflippablePieces(state, player):
+    count = 0
+    for i in range(8):
+        for j in range(8):
+            if (state[i][j] == player):
+                directions = 0
+                if (not isFlippableHorizontal(state, i, j, player)): directions += 1
+                if (not isFlippableVertical(state, i, j, player)): directions += 1
+                if (not isFlippableLeftDiagonal(state, i, j, player)): directions += 1
+                if (not isFlippableRightDiagonal(state, i, j, player)): directions += 1
+                if (directions == 2): count += 1
+                if (directions == 3): count += 3
+                if (directions == 4): count += 6
+    return count
+
+
+def isFlippableHorizontal(state, row, column, player):
+    r = row
+    left = player
+    right = player
+    while(True):
+        r -= 1
+        if (r < 0): break
+        if (state[r][column] != player):
+            left = state[r][column]
+            break
+    r = row
+    while(True):
+        r +=1
+        if (r > 7): break
+        if (state[r][column] != player):
+            right = state[r][column]
+            break
+    if (left == player or right == player): return False
+    if (left != 0 and right != 0): return True
+    return True
+
+def isFlippableVertical(state, row, column, player):
+    c = column
+    top = False
+    bottom = False
+    while(True):
+        c -= 1
+        if (c < 0): break
+        if(state[row][c] != player):
+            top = state[row][c]
+            break
+    c = column
+    while(True):
+        c +=1
+        if (c > 7): break
+        if (state[row][c] != player):
+            bottom = state[row][c]
+            break
+    if (top == player or bottom == player): return False
+    if (top != 0 and bottom != 0): return True
+    return True
+
+def isFlippableLeftDiagonal(state, row, column, player):
+    r = row
+    c = column
+    left = False
+    right = False
+    while(True):
+        r -= 1
+        c -= 1
+        if (r < 0 or c < 0): break
+        if (state[r][c] != player):
+            left = state[r][c]
+            break
+    r = row
+    c = column
+    while(True):
+        r += 1
+        c += 1
+        if (r > 7 or c > 7): break
+        if (state[r][c] != player):
+            right = state[r][c]
+            break
+    if (left == player or right == player): return False
+    if (left != 0 and right != 0): return True
+    return True
+
+def isFlippableRightDiagonal(state, row, column, player):
+    r = row
+    c = column
+    left = False
+    right = False
+    while(True):
+        r -= 1
+        c += 1
+        if (r < 0 or c > 7): break
+        if (state[r][c] != player):
+            left = state[r][c]
+            break
+    r = row
+    c = column
+    while(True):
+        r += 1
+        c -= 1
+        if (r > 7 or c < 0): break
+        if (state[r][c] != player):
+            right = state[r][c]
+            break
+    if (left == player or right == player): return False
+    if (left != 0 and right != 0): return True
+    return True
 

@@ -28,12 +28,15 @@ def move(validMoves):
         newAction = randint(0, len(validMoves) - 1)
         return newAction
     else:
-        # bestAction = alphaBetaSearch(5, state)
         if (myPlayerNumber == 1):
+            # GAVIN
             newAction = takeAction(validMoves)
             return newAction
+
+            
         else:
-            bestAction = danielAlphaBetaSearch(5, state, myPlayerNumber, currentRound)
+            #bestAction = danielAlphaBetaSearch(5, state, myPlayerNumber, currentRound)
+            bestAction = modifiedAlphaBetaSearch(5, state, myPlayerNumber)
             return validMoves.index(bestAction)
 
 def takeAction(validMoves):

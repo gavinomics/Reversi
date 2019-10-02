@@ -2,6 +2,7 @@ import math
 import copy
 import pdb
 from ModifiedAlphaBeta import modifiedAlphaBetaSearch
+from ModifiedAlphaBeta import scoreUnflippablePieces
 
 myPlayerNumber = 0
 otherPlayer = 0
@@ -176,6 +177,7 @@ def getUtility(state):
         for j in range(8):
             if (state[i][j] == myPlayerNumber):
                 score += 1
+    score += scoreUnflippablePieces(state, myPlayerNumber)
     return score
 
 def couldBe(futureState, row, col, me):
