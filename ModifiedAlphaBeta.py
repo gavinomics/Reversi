@@ -29,14 +29,13 @@ def maxValue(depth, state, alpha, beta):
     for a in getValidFutureMoves(state, myPlayerNumber):
 
         actionUtilityofMinimizer, _ = minValue(depth-1, getResults(state, a, myPlayerNumber), alpha, beta)
-
         if actionUtilityofMinimizer > utility:
             #print(actionUtilityofMinimizer, " is greater than ", utility)
             utility = actionUtilityofMinimizer
             action = a
 
         if utility >= beta:
-            #print("Prune")
+            print("Prune here")
             return utility, action
 
         alpha = max(alpha, utility)
@@ -62,12 +61,11 @@ def minValue(depth, state, alpha, beta):
         actionUtilityofMaximizer, _ = maxValue(depth-1, getResults(state, a, playerNum), alpha, beta)
 
         if actionUtilityofMaximizer < utility:
-            #print(actionUtilityofMaximizer, " is less than ", utility)
             utility = actionUtilityofMaximizer
             action = a
 
-        if utility <= beta:
-            #print("Prune")
+        if utility <= alpha:
+            print("Prune there")
             return utility, action
 
         beta = min(beta, utility)
@@ -92,9 +90,13 @@ def getResults(state, action, player):
     flipThePieces(futureState, action, player, 0, -1)
     flipThePieces(futureState, action, player, 1, -1)
 
-    #print("\n")
-    #print("Player: ", player)
-    #print("Action: ", action)
+    print("\n")
+    print("Player: ", player)
+    print("Action: ", action)
+    for i in range(8):
+        print(futureState[7-i])
+    print("Utility: ", getUtility(futureState))
+    print("\n")
 
     return futureState
 
@@ -136,6 +138,194 @@ def getUtility(state):
         for j in range(8):
             if (state[i][j] == myPlayerNumber):
                 score += 1
+                if (i == 0 and j == 0): 
+                    score += 100
+                elif (i == 0 and j == 7):
+                    score += 100
+                elif (i == 7 and j == 0):
+                    score += 100
+                elif (i == 7 and j == 7):
+                    score += 100
+                if (i == 0):
+                    score += 10
+                if (i == 7):
+                    score += 10
+                if (j == 0):
+                    score += 10
+                if (j == 7):
+                    score += 10
+                
+                if (state[0][0] == 0):
+                    if (i == 1 and j == 0):
+                        score += -30
+                    elif (i == 1 and j == 1):
+                        score += -200
+                    elif (i == 0 and j == 1):
+                        score += -30
+
+                    elif (i == 2 and j == 0):
+                      score += 15
+                    elif (i == 2 and j == 1):
+                        score += 15
+                    elif (i == 2 and j == 2):
+                        score += 15
+                    elif (i == 1 and j == 2):
+                        score += 15
+                    elif (i == 0 and j == 2):
+                        score += 15
+
+
+                if (state[0][7] == 0):
+                    if (i == 1 and j == 7):
+                        score += -30
+                    elif (i == 1 and j == 6):
+                        score += -200
+                    elif (i == 0 and j == 6):
+                        score += -30
+
+                    elif (i == 2 and j == 7):
+                        score += 15
+                    elif (i == 2 and j == 6):
+                        score += 15
+                    elif (i == 2 and j == 5):
+                        score += 15
+                    elif (i == 1 and j == 5):
+                        score += 15
+                    elif (i == 0 and j == 5):
+                        score += 15
+                 
+                if (state[7][0] == 0):
+                    if (i == 6 and j == 0):
+                        score += -30
+                    elif (i == 6 and j == 1):
+                        score += -200
+                    elif (i == 7 and j == 1):
+                        score += -30
+
+                    elif (i == 5 and j == 0):
+                        score += 15
+                    elif (i == 5 and j == 1):
+                        score += 15
+                    elif (i == 5 and j == 2):
+                        score += 15
+                    elif (i == 6 and j == 2):
+                        score += 15
+                    elif (i == 7 and j == 2):
+                        score += 15
+
+                if (state[7][7] == 0):
+                    if (i == 6 and j == 7):
+                        score += -30
+                    elif (i == 6 and j == 6):
+                        score += -200
+                    elif (i == 7 and j == 6):
+                        score += -30
+
+                    elif (i == 5 and j == 7):
+                        score += 15
+                    elif (i == 5 and j == 6):
+                        score += 15
+                    elif (i == 5 and j == 5):
+                        score += 15
+                    elif (i == 6 and j == 5):
+                        score += 15
+                    elif (i == 7 and j == 5):
+                        score += 15
+            # elif (state[i][j] != myPlayerNumber and state[i][j] != 0):
+            #     if (i == 0 and j == 0): 
+            #         score -= 50
+            #     elif (i == 0 and j == 7):
+            #         score -= 50
+            #     elif (i == 7 and j == 0):
+            #         score -= 50
+            #     elif (i == 7 and j == 7):
+            #         score -= 50
+            #     if (i == 0):
+            #         score -= 10
+            #     if (i == 7):
+            #         score -= 10
+            #     if (j == 0):
+            #         score -= 10
+            #     if (j == 7):
+            #         score -= 10
+            #     
+            #     if (state[0][0] == 0):
+            #         if (i == 1 and j == 0):
+            #             score -= -30
+            #         elif (i == 1 and j == 1):
+            #             score -= -200
+            #         elif (i == 0 and j == 1):
+            #             score -= -30
+
+            #         elif (i == 2 and j == 0):
+            #             score -= 15
+            #         elif (i == 2 and j == 1):
+            #             score -= 15
+            #         elif (i == 2 and j == 2):
+            #             score -= 15
+            #         elif (i == 1 and j == 2):
+            #             score -= 15
+            #         elif (i == 0 and j == 2):
+            #             score -= 15
+
+
+            #    if (state[0][7] == 0):
+            #        if (i == 1 and j == 7):
+            #            score -= -30
+            #        elif (i == 1 and j == 6):
+            #            score -= -200
+            #        elif (i == 0 and j == 6):
+            #            score -= -30
+
+            #        elif (i == 2 and j == 7):
+            #            score -= 15
+            #        elif (i == 2 and j == 6):
+            #            score -= 15
+            #        elif (i == 2 and j == 5):
+            #            score -= 15
+            #        elif (i == 1 and j == 5):
+            #            score -= 15
+            #        elif (i == 0 and j == 5):
+            #            score -= 15
+            #    
+            #    if (state[7][0] == 0):
+            #        if (i == 6 and j == 0):
+            #            score -= -30
+            #        elif (i == 6 and j == 1):
+            #            score -= -200
+            #        elif (i == 7 and j == 1):
+            #            score -= -30
+
+            #        elif (i == 5 and j == 0):
+            #            score -= 15
+            #        elif (i == 5 and j == 1):
+            #            score -= 15
+            #        elif (i == 5 and j == 2):
+            #            score -= 15
+            #        elif (i == 6 and j == 2):
+            #            score -= 15
+            #        elif (i == 7 and j == 2):
+            #            score -= 15
+
+            #    if (state[7][7] == 0):
+            #        if (i == 6 and j == 7):
+            #            score -= -30
+            #        elif (i == 6 and j == 6):
+            #            score -= -200
+            #        elif (i == 7 and j == 6):
+            #            score -= -30
+
+            #        elif (i == 5 and j == 7):
+            #            score -= 15
+            #        elif (i == 5 and j == 6):
+            #            score -= 15
+            #        elif (i == 5 and j == 5):
+            #            score -= 15
+            #        elif (i == 6 and j == 5):
+            #            score -= 15
+            #        elif (i == 7 and j == 5):
+            #            score -= 15
+
     score += scoreUnflippablePieces(state, myPlayerNumber)
     return score
 
@@ -187,13 +377,11 @@ def scoreUnflippablePieces(state, player):
         for j in range(8):
             if (state[i][j] == player):
                 directions = 0
-                if (not isFlippableHorizontal(state, i, j, player)): directions += 1
-                if (not isFlippableVertical(state, i, j, player)): directions += 1
-                if (not isFlippableLeftDiagonal(state, i, j, player)): directions += 1
-                if (not isFlippableRightDiagonal(state, i, j, player)): directions += 1
-                if (directions == 2): count += 1
-                if (directions == 3): count += 3
-                if (directions == 4): count += 6
+                if (not isFlippableHorizontal(state, i, j, player)
+                and not isFlippableVertical(state, i, j, player)
+                and not isFlippableLeftDiagonal(state, i, j, player)
+                and not isFlippableRightDiagonal(state, i, j, player)):
+                    count += 100
     return count
 
 
@@ -214,14 +402,14 @@ def isFlippableHorizontal(state, row, column, player):
         if (state[r][column] != player):
             right = state[r][column]
             break
-    if (left == player or right == player): return False
-    if (left != 0 and right != 0): return True
-    return True
+    if (left != player and right == 0): return True
+    if (left == 0  and right != player): return True
+    return False
 
 def isFlippableVertical(state, row, column, player):
     c = column
-    top = False
-    bottom = False
+    top = player
+    bottom = player
     while(True):
         c -= 1
         if (c < 0): break
@@ -235,15 +423,15 @@ def isFlippableVertical(state, row, column, player):
         if (state[row][c] != player):
             bottom = state[row][c]
             break
-    if (top == player or bottom == player): return False
-    if (top != 0 and bottom != 0): return True
-    return True
+    if (top != player or bottom == 0): return True
+    if (top == 0 and bottom != player): return True
+    return False
 
 def isFlippableLeftDiagonal(state, row, column, player):
     r = row
     c = column
-    left = False
-    right = False
+    left = player
+    right = player
     while(True):
         r -= 1
         c -= 1
@@ -260,15 +448,15 @@ def isFlippableLeftDiagonal(state, row, column, player):
         if (state[r][c] != player):
             right = state[r][c]
             break
-    if (left == player or right == player): return False
-    if (left != 0 and right != 0): return True
-    return True
+    if (left != player and right == 0): return True
+    if (left == 0  and right != player): return True
+    return False
 
 def isFlippableRightDiagonal(state, row, column, player):
     r = row
     c = column
-    left = False
-    right = False
+    left = player
+    right = player
     while(True):
         r -= 1
         c += 1
@@ -285,7 +473,7 @@ def isFlippableRightDiagonal(state, row, column, player):
         if (state[r][c] != player):
             right = state[r][c]
             break
-    if (left == player or right == player): return False
-    if (left != 0 and right != 0): return True
-    return True
+    if (left != player and right == 0): return True
+    if (left == 0  and right != player): return True
+    return False
 
