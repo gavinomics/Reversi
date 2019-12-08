@@ -157,11 +157,11 @@ def getUtility(state):
                 
                 if (state[0][0] == 0):
                     if (i == 1 and j == 0):
-                        score += -30
+                        score += -200
                     elif (i == 1 and j == 1):
                         score += -200
                     elif (i == 0 and j == 1):
-                        score += -30
+                        score += -200
 
                     elif (i == 2 and j == 0):
                       score += 15
@@ -177,11 +177,11 @@ def getUtility(state):
 
                 if (state[0][7] == 0):
                     if (i == 1 and j == 7):
-                        score += -30
+                        score += -200
                     elif (i == 1 and j == 6):
                         score += -200
                     elif (i == 0 and j == 6):
-                        score += -30
+                        score += -200
 
                     elif (i == 2 and j == 7):
                         score += 15
@@ -196,11 +196,11 @@ def getUtility(state):
                  
                 if (state[7][0] == 0):
                     if (i == 6 and j == 0):
-                        score += -30
+                        score += -200
                     elif (i == 6 and j == 1):
                         score += -200
                     elif (i == 7 and j == 1):
-                        score += -30
+                        score += -200
 
                     elif (i == 5 and j == 0):
                         score += 15
@@ -215,11 +215,11 @@ def getUtility(state):
 
                 if (state[7][7] == 0):
                     if (i == 6 and j == 7):
-                        score += -30
+                        score += -200
                     elif (i == 6 and j == 6):
                         score += -200
                     elif (i == 7 and j == 6):
-                        score += -30
+                        score += -200
 
                     elif (i == 5 and j == 7):
                         score += 15
@@ -423,7 +423,7 @@ def isFlippableVertical(state, row, column, player):
         if (state[row][c] != player):
             bottom = state[row][c]
             break
-    if (top != player or bottom == 0): return True
+    if (top != player and bottom == 0): return True
     if (top == 0 and bottom != player): return True
     return False
 
